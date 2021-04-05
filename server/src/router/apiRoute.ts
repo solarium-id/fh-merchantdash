@@ -16,4 +16,4 @@ router.get("/", GetApiController);
 
 // Delete Router
 
-export { router as apiRoute };
+export { router as apiRoutes };
