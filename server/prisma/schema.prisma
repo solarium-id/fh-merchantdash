@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model MstUser {
+  id BigInt @db.BigInt @id @default(autoincrement())
+  userid  String @db.VarChar(100) @unique
+  password String @db.VarChar(200) 
+  nickname String @db.VarChar(50) @default("")
+  email String @db.VarChar(100) @unique
+  status Int @db.Int
+  createddate DateTime @default(now())
+}
+
+model MstMerchantCat {
+  id Int @db.Int @id @default(autoincrement())
+  category String @db.VarChar(100) 
+
+  // schema relation ke merchant 
+  merchant MstMerchantTes[]
+}
+
+model MstMerchantTes {
+  id Int @db.Int @id @default(autoincrement())
+  merchantname String @db.VarChar(100)
+  merchantaddr String @db.VarChar(100)
+  merchantph String @db.VarChar(100)
+  merchantemail String @db.VarChar(100)
+  merchantpic String @db.VarChar(100)
+  
+  categoryid Int @db.Int
+
+  ownername String @db.VarChar(100)
+  ownerhp String @db.VarChar(100)
+  owneremail String @db.VarChar(100)
+  fotoktp String @db.VarChar(100)
+  reservation Int @db.Int @default(0)
+  addeddate DateTime @default(now())
+
+  // schema relation ke category 
+  category MstMerchantCat @relation(fields: [categoryid], references: [id])
+}
+
