@@ -24,9 +24,7 @@ const loginController = async (req: Request, res: Response) => {
       // const auth = await bcrypt.compare(password, account?.password);
 
       // generate jwt token
-      console.log("bef token");
       const token = createToken(account.id);
-      console.log("aft token");
 
       // return data
       res.status(201).json({ jwt: token, account });

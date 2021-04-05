@@ -8,6 +8,6 @@ const secret = String(process.env.TOKEN_SECRET);
 
 const maxAge = 7 * 24 * 60 * 60; // 7 days
 
-export const createToken = (id: bigint) => {
+export const createToken = (id: number) => {
   return jwt.sign({ id }, secret, { expiresIn: maxAge });
 };
