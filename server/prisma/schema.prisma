@@ -11,7 +11,7 @@ generator client {
 }
 
 model MstUser {
-  id BigInt @db.BigInt @id @default(autoincrement())
+  id Int @db.Int @id @default(autoincrement())
   userid  String @db.VarChar(100) @unique
   password String @db.VarChar(200) 
   nickname String @db.VarChar(50) @default("")
