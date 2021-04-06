@@ -14,6 +14,7 @@ import {
   GetAllMerchant,
   GetOneMerchant,
 } from "../controllers/merchant/GetMerchantController";
+import { PostMerchant } from "../controllers/merchant/PostMerchantController";
 
 // init express router
 const router = express.Router();
@@ -39,7 +40,7 @@ router.delete("/category/:id", DeleteCategory);
 router.get("/merchant", GetAllMerchant);
 router.get("/merchant/:id", GetOneMerchant);
 // Post Route
-router.post("/merchant", PostCategory);
+router.post("/merchant", PostMerchant);
 // Patch Route
 router.patch("/merchant/:id", PatchCategory);
 // Delete Route

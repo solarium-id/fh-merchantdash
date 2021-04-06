@@ -36,8 +36,8 @@ model MstMerchantTes {
   merchantemail String @db.VarChar(100)
   merchantpic String @db.VarChar(100)
   
-  categoryid Int @db.Int
-
+  categoryid Int 
+  
   ownername String @db.VarChar(100)
   ownerhp String @db.VarChar(100)
   owneremail String @db.VarChar(100)
