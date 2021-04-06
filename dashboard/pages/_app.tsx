@@ -6,6 +6,7 @@ import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 import Router, { useRouter } from "next/router";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { ChakraProvider } from "@chakra-ui/react";
 import NProgress from "nprogress";
 import HtmlHead from "../components/HtmlHead";
@@ -20,23 +21,28 @@ Router.events.on("routeChangeStart", (url: string) => {
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
+// init react-query client
+const queryClient = new QueryClient();
+
 // main component
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
   return (
     <>
-      <HtmlHead title="Next Dashboard" />
+      <QueryClientProvider client={queryClient}>
+        <HtmlHead title="Next Dashboard" />
 
-      <ChakraProvider theme={theme} resetCSS>
-        {/* jika menuju route login, tdk perlu merender Layout */}
-        {router.pathname === "/login" ? (
-          <Component {...pageProps} />
-        ) : (
-          <Layout>
+        <ChakraProvider theme={theme} resetCSS>
+          {/* jika menuju route login, tdk perlu merender Layout */}
+          {router.pathname === "/login" ? (
             <Component {...pageProps} />
-          </Layout>
-        )}
-      </ChakraProvider>
+          ) : (
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          )}
+        </ChakraProvider>
+      </QueryClientProvider>
     </>
   );
 }

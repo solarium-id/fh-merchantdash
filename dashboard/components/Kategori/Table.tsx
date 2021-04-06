@@ -10,7 +10,9 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-function KategoriTable() {
+function KategoriTable({ data }) {
+  console.log(data);
+
   return (
     <Table variant="simple" size="sm">
       <TableCaption>Kategori Table</TableCaption>
@@ -21,39 +23,19 @@ function KategoriTable() {
         </Tr>
       </Thead>
       <Tbody>
-        <Tr>
-          <Td>Sejarah</Td>
-          <Td>
-            <Button variant="ghost" colorScheme="green">
-              Edit
-            </Button>
-            <Button variant="ghost" colorScheme="red">
-              Hapus
-            </Button>
-          </Td>
-        </Tr>
-        <Tr>
-          <Td>Novel</Td>
-          <Td>
-            <Button variant="ghost" colorScheme="green">
-              Edit
-            </Button>
-            <Button variant="ghost" colorScheme="red">
-              Hapus
-            </Button>
-          </Td>
-        </Tr>
-        <Tr w="20%">
-          <Td>Non Fiksi</Td>
-          <Td>
-            <Button variant="ghost" colorScheme="green">
-              Edit
-            </Button>
-            <Button variant="ghost" colorScheme="red">
-              Hapus
-            </Button>
-          </Td>
-        </Tr>
+        {data?.map((item) => (
+          <Tr key={item.id}>
+            <Td>{item.category}</Td>
+            <Td>
+              <Button variant="ghost" colorScheme="green">
+                Edit
+              </Button>
+              <Button variant="ghost" colorScheme="red">
+                Hapus
+              </Button>
+            </Td>
+          </Tr>
+        ))}
       </Tbody>
     </Table>
   );

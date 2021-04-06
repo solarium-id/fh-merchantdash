@@ -1,5 +1,4 @@
-import React from "react";
-import Link from "next/link";
+import React, { useState } from "react";
 import {
   Flex,
   VStack,
@@ -11,6 +10,15 @@ import {
 } from "@chakra-ui/react";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    console.log({ email, password });
+  };
+
   return (
     <Flex
       justify="center"
@@ -41,26 +49,34 @@ function Login() {
         </VStack>
 
         {/* login form */}
-        <form>
+        <form onSubmit={handleLogin}>
           <VStack spacing="2">
             {/* email input */}
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
-              <Input type="email" placeholder="example@email.com" />
+              <Input
+                type="email"
+                placeholder="example@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </FormControl>
             {/* password input */}
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
-              <Input type="password" placeholder="password" />
+              <Input
+                type="password"
+                placeholder="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </FormControl>
           </VStack>
 
           {/* login button */}
-          <Link href="/">
-            <Button mt="4" colorScheme="blue" w="full">
-              Masuk
-            </Button>
-          </Link>
+          <Button type="submit" mt="4" colorScheme="blue" w="full">
+            Masuk
+          </Button>
         </form>
       </Flex>
     </Flex>
