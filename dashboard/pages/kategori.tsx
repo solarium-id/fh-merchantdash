@@ -3,17 +3,15 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { Flex, Button, Heading } from "@chakra-ui/react";
 import { authRouting } from "../lib/authRouting";
+import nookies, { parseCookies } from "nookies";
 import type { GetServerSideProps } from "next";
 import KategoriTable from "../components/Kategori/Table";
 
 // api endpoint
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
-// jwt token
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjE3Njc4MjI4LCJleHAiOjE2MTgyODMwMjh9.VXp8MisL0yrRrtEnRHI4HJ8zs9CFJbP0eqwvtGcOw3M";
 
 // fungsi untuk fetching data kategori
-const getCategory = async () => {
+const getCategory = async (token) => {
   const { data } = await axios.get(`${endpoint}/api/category`, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -30,8 +28,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     // jika belum login maka akan diredirect ke halaman login
     return { redirect: { destination: result, permanent: false } };
   } else {
+    // ambil token dari cookies
+    const token = nookies.get(context);
     // get data category
-    const category = await getCategory();
+    const category = await getCategory(token.jwt);
     // kirimkan data category ke component utama
     return { props: { category } };
   }
@@ -39,7 +39,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 // component utama KategoriPage
 function KategoriPage(props) {
-  const category = useQuery("category", getCategory, {
+  // ambil token dari cookies
+  const token = parseCookies();
+  const category = useQuery("category", () => getCategory(token.jwt), {
     initialData: props.category,
   });
 

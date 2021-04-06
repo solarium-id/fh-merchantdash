@@ -11,8 +11,6 @@ import {
 } from "@chakra-ui/react";
 
 function KategoriTable({ data }) {
-  console.log(data);
-
   return (
     <Table variant="simple" size="sm">
       <TableCaption>Kategori Table</TableCaption>
