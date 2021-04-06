@@ -11,11 +11,6 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 
-interface LoginType {
-  email: string;
-  password: string;
-}
-
 // api endpoint
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
 
@@ -24,21 +19,26 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // fungsi untuk melakukan login
   const loginMutation = useMutation((loginInfo) =>
     axios.post(`${endpoint}/login`, loginInfo)
   );
 
+  // handle login button
   const handleLogin = (e) => {
     e.preventDefault();
 
+    // jalankan fungsi login
     loginMutation.mutate(
       // @ts-ignore
       { email, password },
       {
         onError: (error) => {
+          // ketika gagal
           console.log(error);
         },
         onSuccess: ({ data }) => {
+          // ketika berhasil
           console.log(data);
         },
       }
