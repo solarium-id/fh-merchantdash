@@ -1,7 +1,16 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { Box, Flex, Spacer, VStack, Text, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Spacer,
+  VStack,
+  Text,
+  Heading,
+  Button,
+} from "@chakra-ui/react";
 import Link from "next/link";
+import { destroyCookie } from "nookies";
 
 const SideLink = [
   { title: "Dashboard", slug: "/" },
@@ -11,6 +20,14 @@ const SideLink = [
 
 function Sidebar() {
   const router = useRouter();
+
+  // fungsi untuk logout
+  const handleLogout = () => {
+    // hapus cookies jwt
+    destroyCookie(null, "jwt");
+    // redirect ke login
+    router.push("/login");
+  };
 
   return (
     <Flex
@@ -51,6 +68,16 @@ function Sidebar() {
         ))}
       </VStack>
       <Spacer />
+
+      {/* logout button */}
+      <Button
+        onClick={handleLogout}
+        colorScheme="red"
+        variant="outline"
+        w="full"
+      >
+        Logout
+      </Button>
     </Flex>
   );
 }
