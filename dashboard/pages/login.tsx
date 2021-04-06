@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
 import { useMutation } from "react-query";
 import {
   Flex,
@@ -11,6 +12,7 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import { authRouting } from "../lib/authRouting";
+import { setCookie } from "nookies";
 import type { GetServerSideProps } from "next";
 
 // api endpoint
@@ -31,6 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 // Component utama login
 function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -54,7 +57,12 @@ function Login() {
         },
         onSuccess: ({ data }) => {
           // ketika berhasil
-          console.log(data);
+          // simpan nilai jwt di cookies
+          setCookie(null, "jwt", data.jwt, {
+            maxAge: 24 * 60 * 60,
+            path: "/",
+          });
+          router.replace("/");
         },
       }
     );
