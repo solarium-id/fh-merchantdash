@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "../../lib/prismaInit";
 
-// Get All Category
+// Create Category
 export const PostCategory = async (req: Request, res: Response) => {
   // ambil categry dari request body
   const { category } = req.body;

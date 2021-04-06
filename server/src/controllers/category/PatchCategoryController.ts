@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "../../lib/prismaInit";
 
-// Get All Category
+// Update Singel Category
 export const PatchCategory = async (req: Request, res: Response) => {
   // ambil id category yang akan di update
   const { id } = req.params;

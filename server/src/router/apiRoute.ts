@@ -7,23 +7,22 @@ import {
 } from "../controllers/category/GetCategoryController";
 import { PostCategory } from "../controllers/category/PostCategoryController";
 import { PatchCategory } from "../controllers/category/PatchCategoryController";
+import { DeleteCategory } from "../controllers/category/DeleteCategoryController";
 
 const router = express.Router();
 
 // Middleware that is specific to this router
 router.use(verifyTokenMiddleware);
+router.get("/", GetApiController);
 
 // Get Router
-router.get("/", GetApiController);
 router.get("/category", GetAllCategory);
 router.get("/category/:id", GetOneCategory);
-router.post("/category", PostCategory);
-router.patch("/category/:id", PatchCategory);
-
 // Post Router
-
-// Put & Patch Router
-
+router.post("/category", PostCategory);
+// Patch Router
+router.patch("/category/:id", PatchCategory);
 // Delete Router
+router.delete("/category/:id", DeleteCategory);
 
 export { router as apiRoutes };
