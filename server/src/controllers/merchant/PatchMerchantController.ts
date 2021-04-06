@@ -3,27 +3,30 @@ import { prisma } from "../../lib/prismaInit";
 
 // deklarasi interface tipe data input
 interface MerchantInputType {
-  merchantname: string;
-  merchantaddr: string;
-  merchantph: string;
-  merchantemail: string;
-  merchantpic: string;
-  categoryid: number;
-  ownername: string;
-  ownerhp: string;
-  owneremail: string;
-  fotoktp: string;
+  merchantname?: string;
+  merchantaddr?: string;
+  merchantph?: string;
+  merchantemail?: string;
+  merchantpic?: string;
+  categoryid?: number;
+  ownername?: string;
+  ownerhp?: string;
+  owneremail?: string;
+  fotoktp?: string;
   reservation?: number;
 }
 
-// Create Merchant
-export const PostMerchant = async (req: Request, res: Response) => {
+// Update Merchant
+export const PatchMerchant = async (req: Request, res: Response) => {
+  // ambil id category yang akan di update
+  const { id } = req.params;
   // ambil categry dari request body dengan type MerchantInputType
   const data: MerchantInputType = req.body;
 
   try {
     // buat merchant dengan data dari request body
-    const newMerchant = await prisma.mstMerchantTes.create({
+    const newMerchant = await prisma.mstMerchantTes.update({
+      where: { id: Number(id) },
       data: data,
       include: { category: true },
     });
@@ -33,6 +36,6 @@ export const PostMerchant = async (req: Request, res: Response) => {
   } catch (error) {
     // error handling
     console.error(error);
-    res.status(400).json({ msg: "Failed to post data" });
+    res.status(400).json({ msg: "Failed to update data" });
   }
 };
