@@ -1,6 +1,7 @@
 import express from "express";
 import { verifyTokenMiddleware } from "../middleware/verifyTokenMiddleware";
 import { GetApiController } from "../controllers/apiController";
+// category controllers
 import {
   GetAllCategory,
   GetOneCategory,
@@ -8,21 +9,40 @@ import {
 import { PostCategory } from "../controllers/category/PostCategoryController";
 import { PatchCategory } from "../controllers/category/PatchCategoryController";
 import { DeleteCategory } from "../controllers/category/DeleteCategoryController";
+// merchant controllers
+import {
+  GetAllMerchant,
+  GetOneMerchant,
+} from "../controllers/merchant/GetMerchantController";
 
+// init express router
 const router = express.Router();
 
 // Middleware that is specific to this router
 router.use(verifyTokenMiddleware);
 router.get("/", GetApiController);
 
-// Get Router
+// CATEGORY API
+
+// Get Route
 router.get("/category", GetAllCategory);
 router.get("/category/:id", GetOneCategory);
-// Post Router
+// Post Route
 router.post("/category", PostCategory);
-// Patch Router
+// Patch Route
 router.patch("/category/:id", PatchCategory);
-// Delete Router
+// Delete Route
 router.delete("/category/:id", DeleteCategory);
+
+// MERCHANT API
+// Get Route
+router.get("/merchant", GetAllMerchant);
+router.get("/merchant/:id", GetOneMerchant);
+// Post Route
+router.post("/merchant", PostCategory);
+// Patch Route
+router.patch("/merchant/:id", PatchCategory);
+// Delete Route
+router.delete("/merchant/:id", DeleteCategory);
 
 export { router as apiRoutes };
