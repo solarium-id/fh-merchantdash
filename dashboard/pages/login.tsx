@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useMutation } from "react-query";
 import {
   Flex,
   VStack,
@@ -9,14 +11,38 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 
+interface LoginType {
+  email: string;
+  password: string;
+}
+
+// api endpoint
+const endpoint = process.env.NEXT_PUBLIC_API_URL;
+
+// Component utama login
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const loginMutation = useMutation((loginInfo) =>
+    axios.post(`${endpoint}/login`, loginInfo)
+  );
+
   const handleLogin = (e) => {
     e.preventDefault();
 
-    console.log({ email, password });
+    loginMutation.mutate(
+      // @ts-ignore
+      { email, password },
+      {
+        onError: (error) => {
+          console.log(error);
+        },
+        onSuccess: ({ data }) => {
+          console.log(data);
+        },
+      }
+    );
   };
 
   return (
