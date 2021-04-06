@@ -10,7 +10,7 @@ import MerchantTable from "../components/Merchant/Table";
 // api endpoint
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
 
-// fungsi untuk fetching data kategori
+// fungsi untuk fetching data Merchant
 const getMerchant = async (jwt) => {
   const { data } = await axios.get(`${endpoint}/api/merchant`, {
     headers: { Authorization: `Bearer ${jwt}` },
@@ -56,9 +56,9 @@ function MerchantPage(props) {
     >
       {/* page heading */}
       <Flex justify="space-between" align="center" mb="4">
-        <Heading fontSize="xl">Tabel Kategori</Heading>
+        <Heading fontSize="xl">Tabel Merchant</Heading>
         {/* tambah button */}
-        <Button colorScheme="blue">Tambah Kategori</Button>
+        <Button colorScheme="blue">Tambah Merchant</Button>
       </Flex>
       {/* table */}
       {merchant.isSuccess && <MerchantTable data={merchant.data} />}

@@ -1,11 +1,12 @@
 import React from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
-import { Flex, Button, Heading } from "@chakra-ui/react";
+import { Flex, Button, Heading, useDisclosure } from "@chakra-ui/react";
 import { authRouting } from "../lib/authRouting";
 import nookies, { parseCookies } from "nookies";
 import type { GetServerSideProps } from "next";
 import KategoriTable from "../components/Kategori/Table";
+import NewKategori from "../components/Kategori/NewKategori";
 
 // api endpoint
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
@@ -39,6 +40,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 // component utama KategoriPage
 function KategoriPage(props) {
+  // hooks untuk control modal
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   // ambil token dari cookies
   const token = parseCookies();
   const category = useQuery("category", () => getCategory(token.jwt), {
@@ -58,8 +62,15 @@ function KategoriPage(props) {
       <Flex justify="space-between" align="center" mb="4">
         <Heading fontSize="xl">Tabel Kategori</Heading>
         {/* tambah button */}
-        <Button colorScheme="blue">Tambah Kategori</Button>
+        <Button colorScheme="blue" onClick={onOpen}>
+          Tambah Kategori
+        </Button>
       </Flex>
+      {/* tambah kategori modal */}
+      <NewKategori
+        token={token.jwt}
+        modalControl={{ isOpen, onOpen, onClose }}
+      />
       {/* table */}
       {category.isSuccess && <KategoriTable data={category.data} />}
     </Flex>
