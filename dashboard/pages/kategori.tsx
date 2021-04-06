@@ -45,6 +45,7 @@ function KategoriPage(props) {
 
   // ambil token dari cookies
   const token = parseCookies();
+  // function untuk query data
   const category = useQuery("category", () => getCategory(token.jwt), {
     initialData: props.category,
   });
@@ -72,7 +73,9 @@ function KategoriPage(props) {
         modalControl={{ isOpen, onOpen, onClose }}
       />
       {/* table */}
-      {category.isSuccess && <KategoriTable data={category.data} />}
+      {category.isSuccess && (
+        <KategoriTable token={token.jwt} data={category.data} />
+      )}
     </Flex>
   );
 }
