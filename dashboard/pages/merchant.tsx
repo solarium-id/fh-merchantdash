@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { Flex, Button, Heading } from "@chakra-ui/react";
-import KategoriTable from "../components/Kategori/Table";
+import MerchantTable from "../components/Merchant/Table";
 
 // api endpoint
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
@@ -11,26 +11,26 @@ const token =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjE3Njc4MjI4LCJleHAiOjE2MTgyODMwMjh9.VXp8MisL0yrRrtEnRHI4HJ8zs9CFJbP0eqwvtGcOw3M";
 
 // fungsi untuk fetching data kategori
-const getCategory = async () => {
-  const { data } = await axios.get(`${endpoint}/api/category`, {
+const getMerchant = async () => {
+  const { data } = await axios.get(`${endpoint}/api/merchant`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
   return data;
 };
 
-// server side rendering untuk menjalankan getCategory
+// server side rendering untuk menjalankan getMerchant
 // dan memeriksa status login
 export const getServerSideProps = async () => {
-  const category = await getCategory();
+  const merchant = await getMerchant();
 
-  return { props: { category } };
+  return { props: { merchant } };
 };
 
-// component utama KategoriPage
-function KategoriPage(props) {
-  const category = useQuery("category", getCategory, {
-    initialData: props.category,
+// component utama MerchantPage
+function MerchantPage(props) {
+  const merchant = useQuery("merchant", getMerchant, {
+    initialData: props.merchant,
   });
 
   return (
@@ -49,9 +49,9 @@ function KategoriPage(props) {
         <Button colorScheme="blue">Tambah Kategori</Button>
       </Flex>
       {/* table */}
-      {category.isSuccess && <KategoriTable data={category.data} />}
+      {merchant.isSuccess && <MerchantTable data={merchant.data} />}
     </Flex>
   );
 }
 
-export default KategoriPage;
+export default MerchantPage;

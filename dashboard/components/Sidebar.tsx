@@ -6,7 +6,7 @@ import Link from "next/link";
 const SideLink = [
   { title: "Dashboard", slug: "/" },
   { title: "Kategori", slug: "/kategori" },
-  { title: "Barang", slug: "/barang" },
+  { title: "Merchant", slug: "/merchant" },
 ];
 
 function Sidebar() {

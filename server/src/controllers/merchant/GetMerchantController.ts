@@ -5,7 +5,9 @@ import { prisma } from "../../lib/prismaInit";
 export const GetAllMerchant = async (_req: Request, res: Response) => {
   try {
     // ambil semua data Merchant
-    const merchants = await prisma.mstMerchantTes.findMany();
+    const merchants = await prisma.mstMerchantTes.findMany({
+      include: { category: true },
+    });
 
     // kirim data sebagai response
     res.status(200).json(merchants);
@@ -25,6 +27,7 @@ export const GetOneMerchant = async (req: Request, res: Response) => {
     // ambil data spesifik Merchant
     const merchant = await prisma.mstMerchantTes.findUnique({
       where: { id: Number(id) },
+      include: { category: true },
     });
 
     // kirim data sebagai response

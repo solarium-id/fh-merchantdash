@@ -10,7 +10,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-function KategoriTable({ data }) {
+function MerchantTable({ data }) {
   console.log(data);
 
   return (
@@ -18,14 +18,20 @@ function KategoriTable({ data }) {
       <TableCaption>Kategori Table</TableCaption>
       <Thead>
         <Tr>
-          <Th>Nama Kategori</Th>
+          <Th>Nama Merchant</Th>
+          <Th>Kategori</Th>
+          <Th>Nama Owner</Th>
+          <Th>Alamat Merchant</Th>
           <Th>Aksi</Th>
         </Tr>
       </Thead>
       <Tbody>
         {data.map((item) => (
           <Tr key={item.id}>
-            <Td>{item.category}</Td>
+            <Td>{item.merchantname}</Td>
+            <Td>{item.category.category}</Td>
+            <Td>{item.ownername}</Td>
+            <Td>{item.merchantaddr}</Td>
             <Td>
               <Button variant="ghost" colorScheme="green">
                 Edit
@@ -41,4 +47,4 @@ function KategoriTable({ data }) {
   );
 }
 
-export default KategoriTable;
+export default MerchantTable;
