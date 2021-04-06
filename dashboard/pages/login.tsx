@@ -10,6 +10,7 @@ import {
   Text,
   FormControl,
   FormLabel,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { authRouting } from "../lib/authRouting";
 import { setCookie } from "nookies";
@@ -36,6 +37,8 @@ function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
 
   // fungsi untuk melakukan login
   const loginMutation = useMutation((loginInfo) =>
@@ -45,7 +48,8 @@ function Login() {
   // handle login button
   const handleLogin = (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
+    setIsInvalid(false);
     // jalankan fungsi login
     loginMutation.mutate(
       // @ts-ignore
@@ -53,6 +57,8 @@ function Login() {
       {
         onError: (error) => {
           // ketika gagal
+          setIsLoading(false);
+          setIsInvalid(true);
           console.log(error);
         },
         onSuccess: ({ data }) => {
@@ -63,6 +69,7 @@ function Login() {
             path: "/",
           });
           router.replace("/");
+          setIsLoading(false);
         },
       }
     );
@@ -101,7 +108,7 @@ function Login() {
         <form onSubmit={handleLogin}>
           <VStack spacing="2">
             {/* email input */}
-            <FormControl id="email" isRequired>
+            <FormControl id="email" isRequired isInvalid={isInvalid}>
               <FormLabel>Email address</FormLabel>
               <Input
                 type="email"
@@ -109,9 +116,10 @@ function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+              <FormErrorMessage>Email atau password salah</FormErrorMessage>
             </FormControl>
             {/* password input */}
-            <FormControl id="password" isRequired>
+            <FormControl id="password" isRequired isInvalid={isInvalid}>
               <FormLabel>Password</FormLabel>
               <Input
                 type="password"
@@ -119,11 +127,18 @@ function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <FormErrorMessage>Email atau password salah</FormErrorMessage>
             </FormControl>
           </VStack>
 
           {/* login button */}
-          <Button type="submit" mt="4" colorScheme="blue" w="full">
+          <Button
+            isLoading={isLoading}
+            type="submit"
+            mt="4"
+            colorScheme="blue"
+            w="full"
+          >
             Masuk
           </Button>
         </form>
