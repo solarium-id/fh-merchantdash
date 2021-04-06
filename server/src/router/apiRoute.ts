@@ -16,6 +16,7 @@ import {
 } from "../controllers/merchant/GetMerchantController";
 import { PostMerchant } from "../controllers/merchant/PostMerchantController";
 import { PatchMerchant } from "../controllers/merchant/PatchMerchantController";
+import { DeleteMerchant } from "../controllers/merchant/DeleteMerchantController";
 
 // init express router
 const router = express.Router();
@@ -25,7 +26,6 @@ router.use(verifyTokenMiddleware);
 router.get("/", GetApiController);
 
 // CATEGORY API
-
 // Get Route
 router.get("/category", GetAllCategory);
 router.get("/category/:id", GetOneCategory);
@@ -45,6 +45,6 @@ router.post("/merchant", PostMerchant);
 // Patch Route
 router.patch("/merchant/:id", PatchMerchant);
 // Delete Route
-router.delete("/merchant/:id", DeleteCategory);
+router.delete("/merchant/:id", DeleteMerchant);
 
 export { router as apiRoutes };
