@@ -2,6 +2,8 @@ import React from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { Flex, Button, Heading } from "@chakra-ui/react";
+import { authRouting } from "../lib/authRouting";
+import type { GetServerSideProps } from "next";
 import KategoriTable from "../components/Kategori/Table";
 
 // api endpoint
@@ -21,10 +23,18 @@ const getCategory = async () => {
 
 // server side rendering untuk menjalankan getCategory
 // dan memeriksa status login
-export const getServerSideProps = async () => {
-  const category = await getCategory();
-
-  return { props: { category } };
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // cek login token
+  const result = authRouting(context);
+  if (result !== "") {
+    // jika belum login maka akan diredirect ke halaman login
+    return { redirect: { destination: result, permanent: false } };
+  } else {
+    // get data category
+    const category = await getCategory();
+    // kirimkan data category ke component utama
+    return { props: { category } };
+  }
 };
 
 // component utama KategoriPage

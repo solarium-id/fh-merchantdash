@@ -2,6 +2,8 @@ import React from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { Flex, Button, Heading } from "@chakra-ui/react";
+import { authRouting } from "../lib/authRouting";
+import type { GetServerSideProps } from "next";
 import MerchantTable from "../components/Merchant/Table";
 
 // api endpoint
@@ -21,10 +23,18 @@ const getMerchant = async () => {
 
 // server side rendering untuk menjalankan getMerchant
 // dan memeriksa status login
-export const getServerSideProps = async () => {
-  const merchant = await getMerchant();
-
-  return { props: { merchant } };
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // cek login token
+  const result = authRouting(context);
+  if (result !== "") {
+    // jika belum login maka akan diredirect ke halaman login
+    return { redirect: { destination: result, permanent: false } };
+  } else {
+    // get data merchant
+    const merchant = await getMerchant();
+    // kirimkan data merchant ke component utama
+    return { props: { merchant } };
+  }
 };
 
 // component utama MerchantPage
