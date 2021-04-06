@@ -6,6 +6,7 @@ import {
   GetOneCategory,
 } from "../controllers/category/GetCategoryController";
 import { PostCategory } from "../controllers/category/PostCategoryController";
+import { PatchCategory } from "../controllers/category/PatchCategoryController";
 
 const router = express.Router();
 
@@ -17,6 +18,7 @@ router.get("/", GetApiController);
 router.get("/category", GetAllCategory);
 router.get("/category/:id", GetOneCategory);
 router.post("/category", PostCategory);
+router.patch("/category/:id", PatchCategory);
 
 // Post Router
 

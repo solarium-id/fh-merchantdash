@@ -32,7 +32,7 @@ export const verifyTokenMiddleware = (
           res.end();
         } else {
           // jika berhasil maka lanjut (keluar dari midlleware)
-          console.log(decodedToken);
+          console.log({ decodedToken });
           next();
         }
       });

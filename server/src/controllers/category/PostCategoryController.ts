@@ -8,12 +8,12 @@ export const PostCategory = async (req: Request, res: Response) => {
 
   try {
     // buat category dengan data dari request body
-    const categories = await prisma.mstMerchantCat.create({
+    const newCategory = await prisma.mstMerchantCat.create({
       data: { category },
     });
 
     // kirim data sebagai response
-    res.status(200).json(categories);
+    res.status(200).json(newCategory);
   } catch (error) {
     // error handling
     console.error(error);

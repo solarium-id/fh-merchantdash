@@ -22,7 +22,7 @@ export const GetOneCategory = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    // ambil semua data category
+    // ambil data spesifik category
     const category = await prisma.mstMerchantCat.findUnique({
       where: { id: Number(id) },
     });
