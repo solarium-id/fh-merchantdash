@@ -6,6 +6,6 @@ export const GetTimeMiddleware = (
   _res: Response,
   next: NextFunction
 ) => {
-  console.log("Time: ", Date.now());
+  console.log("Request Time: ", Date());
   next();
 };

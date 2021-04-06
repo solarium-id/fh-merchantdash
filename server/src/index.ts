@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { apiRoutes } from "./router/apiRoute";
 import { authRoutes } from "./router/authRoute";
+import { GetTimeMiddleware } from "./middleware/apiMiddleware";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -11,6 +12,7 @@ const server = async () => {
   app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+  app.use(GetTimeMiddleware);
 
   // Route
   app.get("/", (_req, res) => res.send("Server Running Successfully!"));
