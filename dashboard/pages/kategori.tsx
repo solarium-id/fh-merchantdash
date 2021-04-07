@@ -73,9 +73,7 @@ function KategoriPage(props) {
         modalControl={{ isOpen, onOpen, onClose }}
       />
       {/* table */}
-      {category.isSuccess && (
-        <KategoriTable token={token.jwt} data={category.data} />
-      )}
+      {category.isSuccess && <KategoriTable data={category.data} />}
     </Flex>
   );
 }

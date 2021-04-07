@@ -9,37 +9,10 @@ import {
   TableCaption,
   Button,
 } from "@chakra-ui/react";
-import axios from "axios";
-import { useMutation, useQueryClient } from "react-query";
+
 import Link from "next/link";
 
-const endpoint = process.env.NEXT_PUBLIC_API_URL;
-
-function KategoriTable({ token, data }) {
-  // control konfirmasi modal
-  const queryClient = useQueryClient();
-
-  // function untuk hapus kategory
-  const delCategoryMutation = useMutation((id) =>
-    axios.delete(`${endpoint}/api/category/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-  );
-
-  // menjalankan fungsi delete category
-  const handleDelete = (id) => {
-    delCategoryMutation.mutate(id, {
-      onError: (error) => {
-        // ketika gagal
-        console.log(error);
-      },
-      onSuccess: ({ data }) => {
-        // ketika berhasil
-        // invalidate query dan tutup modal
-        queryClient.invalidateQueries("category");
-      },
-    });
-  };
+function KategoriTable({ data }) {
   return (
     <>
       <Table variant="simple" size="sm">
@@ -56,20 +29,12 @@ function KategoriTable({ token, data }) {
               <Tr>
                 <Td>{item.category}</Td>
                 <Td>
-                  {/* edit button */}
-                  <Link href={`/category/${item.id}`}>
+                  {/* Detail button */}
+                  <Link href={`/kategori/${item.id}`}>
                     <Button variant="ghost" colorScheme="green">
                       Detail
                     </Button>
                   </Link>
-                  {/* delete button */}
-                  <Button
-                    variant="ghost"
-                    colorScheme="red"
-                    onClick={() => handleDelete(item.id)}
-                  >
-                    Hapus
-                  </Button>
                 </Td>
               </Tr>
             </React.Fragment>

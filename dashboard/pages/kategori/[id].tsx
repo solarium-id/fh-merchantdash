@@ -1,5 +1,4 @@
-import React from "react";
-import { useQuery } from "react-query";
+import React, { useState } from "react";
 import {
   Flex,
   Button,
@@ -9,11 +8,16 @@ import {
   Input,
   useDisclosure,
   HStack,
+  Spacer,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useMutation, useQueryClient } from "react-query";
 import { authRouting } from "../../lib/authRouting";
 import nookies, { parseCookies } from "nookies";
 import type { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
+import DeleteCategory from "../../components/Kategori/DeleteCategory";
+import EditCategory from "../../components/Kategori/EditCategory";
 
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
 
@@ -39,13 +43,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     // ambil token dari cookies
     const token = nookies.get(context);
     // get data detail category
-    const category = getCategoryDetail(token, categoryId);
+    const category = await getCategoryDetail(token.jwt, categoryId);
+    console.log(category);
     // kirimkan data category ke component utama
     return { props: { category } };
   }
 };
 
-function CategoryDetail(props) {
+// Component Utama
+function CategoryDetail({ category }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [newCategory, setNewCategory] = useState(category.category);
+
+  const token = parseCookies();
+
+  console.log(newCategory);
+  console.log(isEditing);
   return (
     <Flex
       border="1px"
@@ -59,29 +72,44 @@ function CategoryDetail(props) {
         <Heading fontSize="2xl">Kategori Detail</Heading>
         <HStack>
           {/* edit button */}
-          <Button variant="ghost" colorScheme="green">
+          <Button
+            variant="ghost"
+            colorScheme="green"
+            onClick={() => setIsEditing(true)}
+          >
             Edit
           </Button>
           {/* delete button */}
-          <Button
-            variant="ghost"
-            colorScheme="red"
-            // onClick={() => handleDelete(item.id)}
-          >
-            Hapus
-          </Button>
+          <DeleteCategory id={category.id} token={token.jwt} />
         </HStack>
       </Flex>
 
       {/* edit form */}
       <form>
-        <FormControl isReadOnly id="category">
+        <FormControl id="category" isReadOnly={!isEditing}>
           <FormLabel>Kategori</FormLabel>
-          <Input type="text" value={props.category.category} />
+          <Input
+            type="text"
+            value={newCategory}
+            onChange={(e) => setNewCategory(e.target.value)}
+          />
         </FormControl>
 
-        <Flex justify="flex-end" mt="4">
-          <Button display="none">Simpan</Button>
+        <Flex mt="4" display={!isEditing && "none"}>
+          <Button
+            mr="4"
+            onClick={() => {
+              setIsEditing(false);
+              setNewCategory(category.category);
+            }}
+          >
+            Batal
+          </Button>
+          <EditCategory
+            id={category.id}
+            token={token.jwt}
+            newCategory={newCategory}
+          />
         </Flex>
       </form>
     </Flex>
