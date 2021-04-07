@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
+import Link from "next/link";
 
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
 
@@ -55,9 +56,13 @@ function KategoriTable({ token, data }) {
               <Tr>
                 <Td>{item.category}</Td>
                 <Td>
-                  <Button variant="ghost" colorScheme="green">
-                    Edit
-                  </Button>
+                  {/* edit button */}
+                  <Link href={`/category/${item.id}`}>
+                    <Button variant="ghost" colorScheme="green">
+                      Detail
+                    </Button>
+                  </Link>
+                  {/* delete button */}
                   <Button
                     variant="ghost"
                     colorScheme="red"
