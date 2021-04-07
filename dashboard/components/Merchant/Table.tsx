@@ -9,6 +9,7 @@ import {
   TableCaption,
   Button,
 } from "@chakra-ui/react";
+import Link from "next/link";
 
 function MerchantTable({ data }) {
   return (
@@ -31,12 +32,11 @@ function MerchantTable({ data }) {
             <Td>{item.ownername}</Td>
             <Td>{item.merchantaddr}</Td>
             <Td>
-              <Button variant="ghost" colorScheme="green">
-                Edit
-              </Button>
-              <Button variant="ghost" colorScheme="red">
-                Hapus
-              </Button>
+              <Link href={`/kategori/${item.id}`}>
+                <Button variant="ghost" colorScheme="green">
+                  Detail
+                </Button>
+              </Link>
             </Td>
           </Tr>
         ))}

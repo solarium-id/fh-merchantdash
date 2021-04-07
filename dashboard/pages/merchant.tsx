@@ -6,6 +6,7 @@ import { authRouting } from "../lib/authRouting";
 import nookies, { parseCookies } from "nookies";
 import type { GetServerSideProps } from "next";
 import MerchantTable from "../components/Merchant/Table";
+import Link from "next/link";
 
 // api endpoint
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
@@ -58,7 +59,9 @@ function MerchantPage(props) {
       <Flex justify="space-between" align="center" mb="4">
         <Heading fontSize="xl">Tabel Merchant</Heading>
         {/* tambah button */}
-        <Button colorScheme="blue">Tambah Merchant</Button>
+        <Link href="/merchant/new">
+          <Button colorScheme="blue">Tambah Merchant</Button>
+        </Link>
       </Flex>
       {/* table */}
       {merchant.isSuccess && <MerchantTable data={merchant.data} />}

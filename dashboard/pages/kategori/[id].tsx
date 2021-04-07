@@ -6,16 +6,12 @@ import {
   FormControl,
   FormLabel,
   Input,
-  useDisclosure,
   HStack,
-  Spacer,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useMutation, useQueryClient } from "react-query";
 import { authRouting } from "../../lib/authRouting";
 import nookies, { parseCookies } from "nookies";
 import type { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
 import DeleteCategory from "../../components/Kategori/DeleteCategory";
 import EditCategory from "../../components/Kategori/EditCategory";
 
@@ -57,8 +53,6 @@ function CategoryDetail({ category }) {
 
   const token = parseCookies();
 
-  console.log(newCategory);
-  console.log(isEditing);
   return (
     <Flex
       border="1px"
@@ -105,6 +99,7 @@ function CategoryDetail({ category }) {
           >
             Batal
           </Button>
+          {/* simpan edit kategori */}
           <EditCategory
             id={category.id}
             token={token.jwt}

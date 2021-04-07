@@ -9,7 +9,6 @@ import {
   TableCaption,
   Button,
 } from "@chakra-ui/react";
-
 import Link from "next/link";
 
 function KategoriTable({ data }) {
