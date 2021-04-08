@@ -17,6 +17,8 @@ import {
 import { PostMerchant } from "../controllers/merchant/PostMerchantController";
 import { PatchMerchant } from "../controllers/merchant/PatchMerchantController";
 import { DeleteMerchant } from "../controllers/merchant/DeleteMerchantController";
+// image upload controller
+import { PostImage } from "../controllers/PostImageController";
 
 // init express router
 const router = express.Router();
@@ -46,5 +48,8 @@ router.post("/merchant", PostMerchant);
 router.patch("/merchant/:id", PatchMerchant);
 // Delete Route
 router.delete("/merchant/:id", DeleteMerchant);
+
+// FILE UPLOAD API
+router.post("/upload", PostImage);
 
 export { router as apiRoutes };
