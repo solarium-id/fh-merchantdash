@@ -31,10 +31,15 @@ function Sidebar() {
 
   return (
     <Flex
+      position="fixed"
+      top="0"
+      left="0"
+      overflow="hidden"
+      zIndex="1"
       flexDir="column"
       align="center"
       width="20%"
-      h="full"
+      height="full"
       px="4"
       py="8"
       color="gray.800"

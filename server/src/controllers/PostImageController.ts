@@ -15,7 +15,7 @@ export const PostImage = async (req: Request, res: Response) => {
 
   file.mv(`${parentDir}/dashboard/public/uploads/${file.name}`, (err) => {
     if (err) {
-      console.error(err);
+      console.error(err, "error 2");
       res.status(500).send(err);
     }
 

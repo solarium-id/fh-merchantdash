@@ -10,7 +10,7 @@ function Layout({ children }) {
         <Sidebar />
 
         {/* main content */}
-        <Box width="80%" p="4" color="gray.800">
+        <Box ml="20%" width="80%" p="4" color="gray.800">
           {children}
         </Box>
       </Flex>

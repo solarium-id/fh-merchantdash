@@ -12,6 +12,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@fontsource/inter": "^4.2.2",
+    "@heroicons/react": "^1.0.0",
     "axios": "^0.21.1",
     "framer-motion": "^4",
     "next": "10.1.3",
