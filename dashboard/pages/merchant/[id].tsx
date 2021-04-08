@@ -82,6 +82,7 @@ function CategoryDetail({ merchant, category }) {
         merchant={merchant}
         category={category}
         token={token.jwt}
+        edit={{ isEditing, setIsEditing }}
       />
     </Flex>
   );

@@ -14,10 +14,21 @@ interface UploadedImgType {
   fileName?: string;
   filePath?: string;
 }
+interface PropsTypes {
+  token: string;
+  setMerchantImg: any;
+  merchantImg?: string;
+  isEditing?: any;
+}
 
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
 
-function MerchantPicForm({ token, setMerchantImg }) {
+function MerchantPicForm({
+  token,
+  setMerchantImg,
+  merchantImg,
+  isEditing,
+}: PropsTypes) {
   const [file, setFile] = useState("");
   const [isSubmitted, setIsSubmitted] = useState<boolean>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,27 +68,29 @@ function MerchantPicForm({ token, setMerchantImg }) {
     <>
       <FormControl isRequired mt="4" id="merchantpic">
         <FormLabel>Foto Merchant</FormLabel>
-        <Flex mb="4" alignItems="center">
-          <input type="file" name="file" onChange={handleChange} />
-          <Flex ml="4" alignItems="center">
-            {isSubmitted && (
-              <CheckIcon
-                style={{ height: "2rem", width: "2rem", color: "green" }}
-              />
-            )}
-            <Button
-              ml="2"
-              isLoading={isLoading}
-              onClick={onClick}
-              variant="outline"
-            >
-              Upload Foto Merchant
-            </Button>
+        {isEditing && (
+          <Flex mb="4" alignItems="center">
+            <input type="file" name="file" onChange={handleChange} />
+            <Flex ml="4" alignItems="center">
+              {isSubmitted && (
+                <CheckIcon
+                  style={{ height: "2rem", width: "2rem", color: "green" }}
+                />
+              )}
+              <Button
+                ml="2"
+                isLoading={isLoading}
+                onClick={onClick}
+                variant="outline"
+              >
+                Upload Foto Merchant
+              </Button>
+            </Flex>
           </Flex>
-        </Flex>
+        )}
         <img
           style={{ maxWidth: "24rem", border: "1px solid #888" }}
-          src={uploadedImage.filePath}
+          src={merchantImg || uploadedImage.filePath}
         />
       </FormControl>
     </>

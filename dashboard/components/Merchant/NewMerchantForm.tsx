@@ -240,9 +240,13 @@ function NewMerchantForm({ category, token }) {
       </FormControl>
 
       {/* merchantpic */}
-      <MerchantPicForm setMerchantImg={setMerchantImg} token={token} />
+      <MerchantPicForm
+        setMerchantImg={setMerchantImg}
+        isEditing={true}
+        token={token}
+      />
       {/* fotoktp */}
-      <FotoKtpForm setKTPImg={setKTPImg} token={token} />
+      <FotoKtpForm setKTPImg={setKTPImg} isEditing={true} token={token} />
 
       <Flex justify="end" mt="4">
         <Link href="/merchant">

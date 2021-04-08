@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 
 interface PropsTypes {
   merchant: {
+    id: string;
     merchantname: string;
     merchantaddr: string;
     merchantph: string;
@@ -29,23 +30,21 @@ interface PropsTypes {
     ownerhp: string;
     owneremail: string;
     reservation: string;
+    merchantpic: string;
+    fotoktp: string;
   };
   category: {
     id: number;
     category: string;
   }[];
   token: string;
+  edit: any;
 }
 
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
 
-function EditMerchantForm({ merchant, category, token }: PropsTypes) {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const [isLoading, setIsLoading] = useState(false);
-  const [merchantImg, setMerchantImg] = useState("");
-  const [KTPImg, setKTPImg] = useState("");
-  const [newMerchant, setNewMerchant] = useState({
+function EditMerchantForm({ merchant, category, token, edit }: PropsTypes) {
+  const defaultMerchant = {
     merchantname: merchant.merchantname,
     merchantaddr: merchant.merchantaddr,
     merchantph: merchant.merchantaddr,
@@ -55,11 +54,20 @@ function EditMerchantForm({ merchant, category, token }: PropsTypes) {
     ownerhp: merchant.ownerhp,
     owneremail: merchant.owneremail,
     reservation: merchant.reservation,
-  });
+  };
+  const selectedCategory = category.filter(
+    (cat) => cat.id == defaultMerchant.categoryid
+  );
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const [isLoading, setIsLoading] = useState(false);
+  const [merchantImg, setMerchantImg] = useState(merchant.merchantpic);
+  const [KTPImg, setKTPImg] = useState(merchant.fotoktp);
+  const [newMerchant, setNewMerchant] = useState(defaultMerchant);
 
-  // function untuk menambah kategory
-  const newMerchantMutation = useMutation((newMerchant) =>
-    axios.post(`${endpoint}/api/merchant`, newMerchant, {
+  // function untuk menambah merchant
+  const editMerchantMutation = useMutation((newMerchant) =>
+    axios.patch(`${endpoint}/api/merchant/${merchant.id}`, newMerchant, {
       headers: { Authorization: `Bearer ${token}` },
     })
   );
@@ -76,7 +84,7 @@ function EditMerchantForm({ merchant, category, token }: PropsTypes) {
       fotoktp: KTPImg,
     };
 
-    newMerchantMutation.mutate(
+    editMerchantMutation.mutate(
       // @ts-ignore
       submitData,
       {
@@ -90,17 +98,6 @@ function EditMerchantForm({ merchant, category, token }: PropsTypes) {
           router.push("/merchant");
           setMerchantImg("");
           setKTPImg("");
-          setNewMerchant({
-            merchantname: "",
-            merchantaddr: "",
-            merchantph: "",
-            merchantemail: "",
-            categoryid: 0,
-            ownername: "",
-            ownerhp: "",
-            owneremail: "",
-            reservation: "",
-          });
           setIsLoading(false);
         },
       }
@@ -111,7 +108,7 @@ function EditMerchantForm({ merchant, category, token }: PropsTypes) {
     <form onSubmit={handleSubmit}>
       <SimpleGrid columns={2} spacing={4}>
         {/* merchantname */}
-        <FormControl isReadOnly isRequired id="merchantname">
+        <FormControl isReadOnly={!edit.isEditing} isRequired id="merchantname">
           <FormLabel>Nama Merchant</FormLabel>
           <Input
             value={newMerchant.merchantname}
@@ -126,7 +123,7 @@ function EditMerchantForm({ merchant, category, token }: PropsTypes) {
           />
         </FormControl>
         {/* merchantaddr */}
-        <FormControl isReadOnly isRequired id="merchantaddr">
+        <FormControl isReadOnly={!edit.isEditing} isRequired id="merchantaddr">
           <FormLabel>Alamat Merchant</FormLabel>
           <Input
             value={newMerchant.merchantaddr}
@@ -141,7 +138,7 @@ function EditMerchantForm({ merchant, category, token }: PropsTypes) {
           />
         </FormControl>
         {/* merchantph */}
-        <FormControl isReadOnly isRequired id="merchantph">
+        <FormControl isReadOnly={!edit.isEditing} isRequired id="merchantph">
           <FormLabel>No Telp Merchant</FormLabel>
           <Input
             value={newMerchant.merchantph}
@@ -156,7 +153,7 @@ function EditMerchantForm({ merchant, category, token }: PropsTypes) {
           />
         </FormControl>
         {/* merchantemail */}
-        <FormControl isReadOnly isRequired id="merchantemail">
+        <FormControl isReadOnly={!edit.isEditing} isRequired id="merchantemail">
           <FormLabel>Alamat Email Merchant</FormLabel>
           <Input
             value={newMerchant.merchantemail}
@@ -172,27 +169,32 @@ function EditMerchantForm({ merchant, category, token }: PropsTypes) {
         </FormControl>
 
         {/* categoryid */}
-        <FormControl isReadOnly isRequired id="categoryid">
+        <FormControl isRequired id="categoryid">
           <FormLabel>Kategori</FormLabel>
-          <Select
-            value={newMerchant.categoryid}
-            onChange={(e) =>
-              setNewMerchant({
-                ...newMerchant,
-                categoryid: Number(e.target.value),
-              })
-            }
-            placeholder="Pilih Kategori"
-          >
-            {category.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.category}
-              </option>
-            ))}
-          </Select>
+          {edit.isEditing ? (
+            <Select
+              isReadOnly={true}
+              value={newMerchant.categoryid}
+              onChange={(e) =>
+                setNewMerchant({
+                  ...newMerchant,
+                  categoryid: Number(e.target.value),
+                })
+              }
+              placeholder="Pilih Kategori"
+            >
+              {category.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.category}
+                </option>
+              ))}
+            </Select>
+          ) : (
+            <Input isReadOnly={true} value={selectedCategory[0].category} />
+          )}
         </FormControl>
         {/* ownername */}
-        <FormControl isReadOnly isRequired id="ownername">
+        <FormControl isReadOnly={!edit.isEditing} isRequired id="ownername">
           <FormLabel>Nama Owner</FormLabel>
           <Input
             value={newMerchant.ownername}
@@ -207,7 +209,7 @@ function EditMerchantForm({ merchant, category, token }: PropsTypes) {
           />
         </FormControl>
         {/* ownerhp */}
-        <FormControl isReadOnly isRequired id="ownerhp">
+        <FormControl isReadOnly={!edit.isEditing} isRequired id="ownerhp">
           <FormLabel>No Telp Merchant</FormLabel>
           <Input
             value={newMerchant.ownerhp}
@@ -222,7 +224,7 @@ function EditMerchantForm({ merchant, category, token }: PropsTypes) {
           />
         </FormControl>
         {/* owneremail */}
-        <FormControl isReadOnly isRequired id="owneremail">
+        <FormControl isReadOnly={!edit.isEditing} isRequired id="owneremail">
           <FormLabel>Alamat Email Owner</FormLabel>
           <Input
             value={newMerchant.owneremail}
@@ -239,7 +241,7 @@ function EditMerchantForm({ merchant, category, token }: PropsTypes) {
       </SimpleGrid>
 
       {/* reservation */}
-      <FormControl isReadOnly isRequired mt="4" id="reservation">
+      <FormControl isRequired mt="4" id="reservation">
         <FormLabel>Status Reservasi</FormLabel>
         <RadioGroup
           name="reservation"
@@ -252,21 +254,41 @@ function EditMerchantForm({ merchant, category, token }: PropsTypes) {
           }
         >
           <Stack direction="row">
-            <Radio value="1">Ya</Radio>
-            <Radio value="0">Tidak</Radio>
+            <Radio isReadOnly={!edit.isEditing} value="1">
+              Ya
+            </Radio>
+            <Radio isReadOnly={!edit.isEditing} value="0">
+              Tidak
+            </Radio>
           </Stack>
         </RadioGroup>
       </FormControl>
 
       {/* merchantpic */}
-      <MerchantPicForm setMerchantImg={setMerchantImg} token={token} />
+      <MerchantPicForm
+        setMerchantImg={setMerchantImg}
+        token={token}
+        merchantImg={merchantImg}
+        isEditing={edit.isEditing}
+      />
       {/* fotoktp */}
-      <FotoKtpForm setKTPImg={setKTPImg} token={token} />
+      <FotoKtpForm
+        setKTPImg={setKTPImg}
+        token={token}
+        KTPImg={KTPImg}
+        isEditing={edit.isEditing}
+      />
 
-      <Flex justify="end" mt="4">
-        <Link href="/merchant">
-          <Button mr="2">Batal</Button>
-        </Link>
+      <Flex justify="end" mt="8" display={!edit.isEditing && "none"}>
+        <Button
+          mr="4"
+          onClick={() => {
+            edit.setIsEditing(false);
+            setNewMerchant(defaultMerchant);
+          }}
+        >
+          Batal
+        </Button>
         <Button isLoading={isLoading} type="submit" colorScheme="blue">
           Simpan
         </Button>

@@ -13,7 +13,7 @@ import { authRouting } from "../../lib/authRouting";
 import nookies, { parseCookies } from "nookies";
 import type { GetServerSideProps } from "next";
 import DeleteCategory from "../../components/Kategori/DeleteCategory";
-import EditCategory from "../../components/Kategori/EditCategory";
+import EditCategoryButton from "../../components/Kategori/EditCategoryButton";
 
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
 
@@ -99,7 +99,7 @@ function CategoryDetail({ category }) {
             Batal
           </Button>
           {/* simpan edit kategori */}
-          <EditCategory
+          <EditCategoryButton
             id={category.id}
             token={token.jwt}
             newCategory={newCategory}

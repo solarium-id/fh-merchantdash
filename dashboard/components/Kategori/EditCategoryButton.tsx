@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
 
-function EditCategory({ id, token, newCategory }) {
+function EditCategoryButton({ id, token, newCategory }) {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -46,4 +46,4 @@ function EditCategory({ id, token, newCategory }) {
   );
 }
 
-export default EditCategory;
+export default EditCategoryButton;
