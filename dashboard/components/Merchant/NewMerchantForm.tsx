@@ -12,10 +12,18 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useMutation, useQueryClient } from "react-query";
+import axios from "axios";
 import MerchantPicForm from "./MerchantPicForm";
 import FotoKtpForm from "./FotoKtpForm";
+import { useRouter } from "next/router";
+
+const endpoint = process.env.NEXT_PUBLIC_API_URL;
 
 function NewMerchantForm({ category, token }) {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const [isLoading, setIsLoading] = useState(false);
   const [merchantImg, setMerchantImg] = useState("");
   const [KTPImg, setKTPImg] = useState("");
   const [newMerchant, setNewMerchant] = useState({
@@ -23,24 +31,61 @@ function NewMerchantForm({ category, token }) {
     merchantaddr: "",
     merchantph: "",
     merchantemail: "",
-    categoryid: "",
+    categoryid: 0,
     ownername: "",
     ownerhp: "",
     owneremail: "",
     reservation: "",
   });
 
+  // function untuk menambah kategory
+  const newMerchantMutation = useMutation((newMerchant) =>
+    axios.post(`${endpoint}/api/merchant`, newMerchant, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  );
+
   console.log(newMerchant.reservation);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const submitData = {
       ...newMerchant,
+      reservation: Number(newMerchant.reservation),
       merchantpic: merchantImg,
-      fotoKtp: KTPImg,
+      fotoktp: KTPImg,
     };
 
-    console.log(submitData);
+    newMerchantMutation.mutate(
+      // @ts-ignore
+      submitData,
+      {
+        onError: (error) => {
+          // ketika gagal
+          console.log(error);
+          setIsLoading(false);
+        },
+        onSuccess: ({ data }) => {
+          queryClient.invalidateQueries("category");
+          router.push("/merchant");
+          setMerchantImg("");
+          setKTPImg("");
+          setNewMerchant({
+            merchantname: "",
+            merchantaddr: "",
+            merchantph: "",
+            merchantemail: "",
+            categoryid: 0,
+            ownername: "",
+            ownerhp: "",
+            owneremail: "",
+            reservation: "",
+          });
+          setIsLoading(false);
+        },
+      }
+    );
   };
 
   return (
@@ -115,7 +160,7 @@ function NewMerchantForm({ category, token }) {
             onChange={(e) =>
               setNewMerchant({
                 ...newMerchant,
-                categoryid: e.target.value,
+                categoryid: Number(e.target.value),
               })
             }
             placeholder="Pilih Kategori"
@@ -202,7 +247,7 @@ function NewMerchantForm({ category, token }) {
         <Link href="/merchant">
           <Button mr="2">Batal</Button>
         </Link>
-        <Button type="submit" colorScheme="blue">
+        <Button isLoading={isLoading} type="submit" colorScheme="blue">
           Simpan
         </Button>
       </Flex>
