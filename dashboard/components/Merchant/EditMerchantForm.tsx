@@ -18,24 +18,43 @@ import MerchantPicForm from "./MerchantPicForm";
 import FotoKtpForm from "./FotoKtpForm";
 import { useRouter } from "next/router";
 
+interface PropsTypes {
+  merchant: {
+    merchantname: string;
+    merchantaddr: string;
+    merchantph: string;
+    merchantemail: string;
+    categoryid: number;
+    ownername: string;
+    ownerhp: string;
+    owneremail: string;
+    reservation: string;
+  };
+  category: {
+    id: number;
+    category: string;
+  }[];
+  token: string;
+}
+
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
 
-function NewMerchantForm({ category, token }) {
+function EditMerchantForm({ merchant, category, token }: PropsTypes) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const [merchantImg, setMerchantImg] = useState("");
   const [KTPImg, setKTPImg] = useState("");
   const [newMerchant, setNewMerchant] = useState({
-    merchantname: "",
-    merchantaddr: "",
-    merchantph: "",
-    merchantemail: "",
-    categoryid: 0,
-    ownername: "",
-    ownerhp: "",
-    owneremail: "",
-    reservation: "",
+    merchantname: merchant.merchantname,
+    merchantaddr: merchant.merchantaddr,
+    merchantph: merchant.merchantaddr,
+    merchantemail: merchant.merchantemail,
+    categoryid: merchant.categoryid,
+    ownername: merchant.ownername,
+    ownerhp: merchant.ownerhp,
+    owneremail: merchant.owneremail,
+    reservation: merchant.reservation,
   });
 
   // function untuk menambah kategory
@@ -92,7 +111,7 @@ function NewMerchantForm({ category, token }) {
     <form onSubmit={handleSubmit}>
       <SimpleGrid columns={2} spacing={4}>
         {/* merchantname */}
-        <FormControl isRequired id="merchantname">
+        <FormControl isReadOnly isRequired id="merchantname">
           <FormLabel>Nama Merchant</FormLabel>
           <Input
             value={newMerchant.merchantname}
@@ -107,7 +126,7 @@ function NewMerchantForm({ category, token }) {
           />
         </FormControl>
         {/* merchantaddr */}
-        <FormControl isRequired id="merchantaddr">
+        <FormControl isReadOnly isRequired id="merchantaddr">
           <FormLabel>Alamat Merchant</FormLabel>
           <Input
             value={newMerchant.merchantaddr}
@@ -122,7 +141,7 @@ function NewMerchantForm({ category, token }) {
           />
         </FormControl>
         {/* merchantph */}
-        <FormControl isRequired id="merchantph">
+        <FormControl isReadOnly isRequired id="merchantph">
           <FormLabel>No Telp Merchant</FormLabel>
           <Input
             value={newMerchant.merchantph}
@@ -137,7 +156,7 @@ function NewMerchantForm({ category, token }) {
           />
         </FormControl>
         {/* merchantemail */}
-        <FormControl isRequired id="merchantemail">
+        <FormControl isReadOnly isRequired id="merchantemail">
           <FormLabel>Alamat Email Merchant</FormLabel>
           <Input
             value={newMerchant.merchantemail}
@@ -153,7 +172,7 @@ function NewMerchantForm({ category, token }) {
         </FormControl>
 
         {/* categoryid */}
-        <FormControl isRequired id="categoryid">
+        <FormControl isReadOnly isRequired id="categoryid">
           <FormLabel>Kategori</FormLabel>
           <Select
             value={newMerchant.categoryid}
@@ -173,7 +192,7 @@ function NewMerchantForm({ category, token }) {
           </Select>
         </FormControl>
         {/* ownername */}
-        <FormControl isRequired id="ownername">
+        <FormControl isReadOnly isRequired id="ownername">
           <FormLabel>Nama Owner</FormLabel>
           <Input
             value={newMerchant.ownername}
@@ -188,7 +207,7 @@ function NewMerchantForm({ category, token }) {
           />
         </FormControl>
         {/* ownerhp */}
-        <FormControl isRequired id="ownerhp">
+        <FormControl isReadOnly isRequired id="ownerhp">
           <FormLabel>No Telp Merchant</FormLabel>
           <Input
             value={newMerchant.ownerhp}
@@ -203,7 +222,7 @@ function NewMerchantForm({ category, token }) {
           />
         </FormControl>
         {/* owneremail */}
-        <FormControl isRequired id="owneremail">
+        <FormControl isReadOnly isRequired id="owneremail">
           <FormLabel>Alamat Email Owner</FormLabel>
           <Input
             value={newMerchant.owneremail}
@@ -220,11 +239,11 @@ function NewMerchantForm({ category, token }) {
       </SimpleGrid>
 
       {/* reservation */}
-      <FormControl isRequired mt="4" id="reservation">
+      <FormControl isReadOnly isRequired mt="4" id="reservation">
         <FormLabel>Status Reservasi</FormLabel>
         <RadioGroup
           name="reservation"
-          value={newMerchant.reservation}
+          value={String(newMerchant.reservation)}
           onChange={(e) =>
             setNewMerchant({
               ...newMerchant,
@@ -256,4 +275,4 @@ function NewMerchantForm({ category, token }) {
   );
 }
 
-export default NewMerchantForm;
+export default EditMerchantForm;

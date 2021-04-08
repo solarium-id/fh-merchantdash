@@ -40,7 +40,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const token = nookies.get(context);
     // get data detail category
     const category = await getCategoryDetail(token.jwt, categoryId);
-    console.log(category);
     // kirimkan data category ke component utama
     return { props: { category } };
   }

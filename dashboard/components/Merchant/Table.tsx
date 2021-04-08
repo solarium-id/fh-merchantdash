@@ -32,7 +32,7 @@ function MerchantTable({ data }) {
             <Td>{item.ownername}</Td>
             <Td>{item.merchantaddr}</Td>
             <Td>
-              <Link href={`/kategori/${item.id}`}>
+              <Link href={`/merchant/${item.id}`}>
                 <Button variant="ghost" colorScheme="green">
                   Detail
                 </Button>

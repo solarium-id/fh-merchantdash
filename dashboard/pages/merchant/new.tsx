@@ -38,9 +38,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 function NewMerchant({ category }) {
-  console.log(category);
-
   const token = parseCookies();
+
   return (
     <Flex
       border="1px"
