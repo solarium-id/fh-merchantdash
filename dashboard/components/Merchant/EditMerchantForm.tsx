@@ -11,7 +11,6 @@ import {
   Stack,
   Flex,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import MerchantPicForm from "./MerchantPicForm";
@@ -34,9 +33,14 @@ interface PropsTypes {
     fotoktp: string;
   };
   category: {
-    id: number;
-    category: string;
-  }[];
+    pageItems: number;
+    currentPage: number | null;
+    totalPage: number;
+    categories: {
+      id: number;
+      category: string;
+    }[];
+  };
   token: string;
   edit: any;
 }
@@ -55,7 +59,7 @@ function EditMerchantForm({ merchant, category, token, edit }: PropsTypes) {
     owneremail: merchant.owneremail,
     reservation: merchant.reservation,
   };
-  const selectedCategory = category.filter(
+  const selectedCategory = category.categories.filter(
     (cat) => cat.id == defaultMerchant.categoryid
   );
   const router = useRouter();
@@ -183,7 +187,7 @@ function EditMerchantForm({ merchant, category, token, edit }: PropsTypes) {
               }
               placeholder="Pilih Kategori"
             >
-              {category.map((cat) => (
+              {category.categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.category}
                 </option>

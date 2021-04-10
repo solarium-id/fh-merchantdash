@@ -165,7 +165,7 @@ function NewMerchantForm({ category, token }) {
             }
             placeholder="Pilih Kategori"
           >
-            {category.map((cat) => (
+            {category.categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.category}
               </option>
@@ -252,7 +252,14 @@ function NewMerchantForm({ category, token }) {
         <Link href="/merchant">
           <Button mr="2">Batal</Button>
         </Link>
-        <Button isLoading={isLoading} type="submit" colorScheme="blue">
+        <Button
+          isLoading={isLoading}
+          disabled={
+            merchantImg === "" && KTPImg === "" && newMerchant.categoryid === 0
+          }
+          type="submit"
+          colorScheme="blue"
+        >
           Simpan
         </Button>
       </Flex>
