@@ -8,14 +8,28 @@ import {
   Td,
   TableCaption,
   Button,
+  ButtonGroup,
+  IconButton,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import {
+  ChevronDoubleLeftIcon,
+  ChevronDoubleRightIcon,
+} from "@heroicons/react/outline";
 
-function KategoriTable({ data }) {
+function KategoriTable({ data, page, setPage, isFetching }) {
+  // const handlePagination = (action: string) => {
+  //   if (action === "next") {
+  //     page.setPage(page.page + 1);
+  //   } else if (action === "prev") {
+  //     page.setPage(page.page - 1);
+  //   }
+  // queryClient.invalidateQueries("category");
+  // };
+
   return (
     <>
       <Table variant="simple" size="sm">
-        <TableCaption>Kategori Table</TableCaption>
         <Thead>
           <Tr>
             <Th>Nama Kategori</Th>
@@ -23,7 +37,7 @@ function KategoriTable({ data }) {
           </Tr>
         </Thead>
         <Tbody>
-          {data.map((item) => (
+          {data.categories.map((item) => (
             <React.Fragment key={item.id}>
               <Tr>
                 <Td>{item.category}</Td>
@@ -39,6 +53,32 @@ function KategoriTable({ data }) {
             </React.Fragment>
           ))}
         </Tbody>
+        <TableCaption>
+          <ButtonGroup isAttached mx="3" variant="outline">
+            <IconButton
+              aria-label="perev"
+              onClick={() => setPage(page - 1)}
+              disabled={page <= 1}
+              icon={
+                <ChevronDoubleLeftIcon
+                  style={{ height: "1.25rem", width: "1.25rem" }}
+                />
+              }
+            />
+            <Button>{page}</Button>
+            <IconButton
+              aria-label="next"
+              onClick={() => setPage(page + 1)}
+              disabled={page == data.totalPage}
+              icon={
+                <ChevronDoubleRightIcon
+                  style={{ height: "1.25rem", width: "1.25rem" }}
+                />
+              }
+            />
+          </ButtonGroup>
+          {/* {isFetching ? <span> Loading...</span> : null} */}
+        </TableCaption>
       </Table>
     </>
   );

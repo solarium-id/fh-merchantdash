@@ -1,19 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { useQuery } from "react-query";
-import { Flex, Button, Heading, useDisclosure } from "@chakra-ui/react";
+import { useQuery, useQueryClient } from "react-query";
+import {
+  Flex,
+  Button,
+  Heading,
+  IconButton,
+  ButtonGroup,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { authRouting } from "../lib/authRouting";
 import nookies, { parseCookies } from "nookies";
 import type { GetServerSideProps } from "next";
 import KategoriTable from "../components/Kategori/Table";
 import NewKategori from "../components/Kategori/NewKategori";
-
+import {
+  ChevronDoubleLeftIcon,
+  ChevronDoubleRightIcon,
+} from "@heroicons/react/outline";
 // api endpoint
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
 
 // fungsi untuk fetching data kategori
-const getCategory = async (token) => {
-  const { data } = await axios.get(`${endpoint}/api/category`, {
+const getCategory = async (token, page?) => {
+  let url = `${endpoint}/api/category?page=${page}`;
+  // if (page) {
+  //   url = url + `?page=${page}`;
+  // }
+  const { data } = await axios.get(url, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -32,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     // ambil token dari cookies
     const token = nookies.get(context);
     // get data category
-    const category = await getCategory(token.jwt);
+    const category = await getCategory(token.jwt, 1);
     // kirimkan data category ke component utama
     return { props: { category } };
   }
@@ -40,15 +54,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 // component utama KategoriPage
 function KategoriPage(props) {
+  const queryClient = useQueryClient();
+  const [page, setPage] = useState(1);
   // hooks untuk control modal
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // ambil token dari cookies
   const token = parseCookies();
   // function untuk query data
-  const category = useQuery("category", () => getCategory(token.jwt), {
-    initialData: props.category,
-  });
+  const { status, data, isFetching } = useQuery(
+    ["category", page],
+    () => getCategory(token.jwt, page),
+    { initialData: props.category }
+  );
 
   return (
     <Flex
@@ -72,8 +90,23 @@ function KategoriPage(props) {
         token={token.jwt}
         modalControl={{ isOpen, onOpen, onClose }}
       />
+
+      {status === "loading" && (
+        <Heading fontSize="xl" my="8">
+          Loading
+        </Heading>
+      )}
       {/* table */}
-      {category.isSuccess && <KategoriTable data={category.data} />}
+      {status === "success" && (
+        <>
+          <KategoriTable
+            data={data}
+            page={page}
+            setPage={setPage}
+            isFetching={isFetching}
+          />
+        </>
+      )}
     </Flex>
   );
 }
