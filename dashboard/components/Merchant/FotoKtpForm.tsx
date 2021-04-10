@@ -10,24 +10,20 @@ import {
 import axios from "axios";
 import { CheckIcon } from "@heroicons/react/outline";
 
-interface UploadedImgType {
-  fileName?: string;
-  filePath?: string;
-}
 interface PropsTypes {
-  token: string;
+  token?: string;
   setKTPImg: any;
   KTPImg?: string;
   isEditing?: any;
 }
 
-const endpoint = process.env.NEXT_PUBLIC_API_URL;
+const cloudinaryEndpoint = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
 
 function FotoKtpForm({ token, setKTPImg, KTPImg, isEditing }: PropsTypes) {
   const [file, setFile] = useState("");
   const [isSubmitted, setIsSubmitted] = useState<boolean>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState<UploadedImgType>({});
+  const [uploadedImage, setUploadedImage] = useState("");
 
   const handleChange = (e) => {
     setFile(e.target.files[0]);
@@ -37,17 +33,16 @@ function FotoKtpForm({ token, setKTPImg, KTPImg, isEditing }: PropsTypes) {
     setIsLoading(true);
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("upload_preset", "ktp_upload");
 
     try {
-      const res = await axios.post(`${endpoint}/api/upload`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await axios.post(
+        `${cloudinaryEndpoint}/image/upload`,
+        formData
+      );
 
-      setUploadedImage(res.data);
-      setKTPImg(res.data.filePath);
+      setUploadedImage(res.data.eager[0].secure_url);
+      setKTPImg(res.data.secure_url);
 
       setIsLoading(false);
       setIsSubmitted(true);
@@ -85,7 +80,7 @@ function FotoKtpForm({ token, setKTPImg, KTPImg, isEditing }: PropsTypes) {
         )}
         <img
           style={{ maxWidth: "24rem", border: "1px solid #888" }}
-          src={KTPImg || uploadedImage.filePath}
+          src={KTPImg || uploadedImage}
         />
       </FormControl>
     </>
