@@ -18,15 +18,6 @@ import {
 } from "@heroicons/react/outline";
 
 function KategoriTable({ data, page, setPage, isFetching }) {
-  // const handlePagination = (action: string) => {
-  //   if (action === "next") {
-  //     page.setPage(page.page + 1);
-  //   } else if (action === "prev") {
-  //     page.setPage(page.page - 1);
-  //   }
-  // queryClient.invalidateQueries("category");
-  // };
-
   return (
     <>
       <Table variant="simple" size="sm">
@@ -56,7 +47,7 @@ function KategoriTable({ data, page, setPage, isFetching }) {
         <TableCaption>
           <ButtonGroup isAttached mx="3" variant="outline">
             <IconButton
-              aria-label="perev"
+              aria-label="prev"
               onClick={() => setPage(page - 1)}
               disabled={page <= 1}
               icon={

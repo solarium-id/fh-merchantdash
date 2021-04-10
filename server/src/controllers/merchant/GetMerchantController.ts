@@ -2,15 +2,35 @@ import type { Request, Response } from "express";
 import { prisma } from "../../lib/prismaInit";
 
 // Get All Merchant
-export const GetAllMerchant = async (_req: Request, res: Response) => {
+export const GetAllMerchant = async (req: Request, res: Response) => {
+  const page = Number(req.query.page);
+  const item = 10;
   try {
+    let merchants;
+    if (page) {
+      merchants = await prisma.mstMerchantTes.findMany({
+        include: { category: true },
+        skip: item * (page - 1),
+        take: item,
+        orderBy: { merchantname: "asc" },
+      });
+    } else {
+      // default 10 item pertama
+      merchants = await prisma.mstMerchantTes.findMany({
+        include: { category: true },
+        orderBy: { merchantname: "asc" },
+      });
+    }
     // ambil semua data Merchant
-    const merchants = await prisma.mstMerchantTes.findMany({
-      include: { category: true },
-    });
+    const totalPage = await prisma.mstMerchantTes.count();
 
     // kirim data sebagai response
-    res.status(200).json(merchants);
+    res.status(200).json({
+      pageItems: merchants.length,
+      currentPage: page,
+      totalPage: Math.ceil(totalPage / 10),
+      merchants,
+    });
   } catch (error) {
     // error handling
     console.error(error);

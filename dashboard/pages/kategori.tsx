@@ -24,9 +24,7 @@ const endpoint = process.env.NEXT_PUBLIC_API_URL;
 // fungsi untuk fetching data kategori
 const getCategory = async (token, page?) => {
   let url = `${endpoint}/api/category?page=${page}`;
-  // if (page) {
-  //   url = url + `?page=${page}`;
-  // }
+
   const { data } = await axios.get(url, {
     headers: { Authorization: `Bearer ${token}` },
   });

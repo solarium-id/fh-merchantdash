@@ -8,13 +8,18 @@ import {
   Td,
   TableCaption,
   Button,
+  ButtonGroup,
+  IconButton,
 } from "@chakra-ui/react";
+import {
+  ChevronDoubleLeftIcon,
+  ChevronDoubleRightIcon,
+} from "@heroicons/react/outline";
 import Link from "next/link";
 
-function MerchantTable({ data }) {
+function MerchantTable({ data, page, setPage, isFetching }) {
   return (
     <Table variant="simple" size="sm">
-      <TableCaption>Kategori Table</TableCaption>
       <Thead>
         <Tr>
           <Th>Nama Merchant</Th>
@@ -25,7 +30,7 @@ function MerchantTable({ data }) {
         </Tr>
       </Thead>
       <Tbody>
-        {data.map((item) => (
+        {data.merchants.map((item) => (
           <Tr key={item.id}>
             <Td>{item.merchantname}</Td>
             <Td>{item.category.category}</Td>
@@ -41,6 +46,32 @@ function MerchantTable({ data }) {
           </Tr>
         ))}
       </Tbody>
+      <TableCaption>
+        <ButtonGroup isAttached mx="3" variant="outline">
+          <IconButton
+            aria-label="prev"
+            onClick={() => setPage(page - 1)}
+            disabled={page <= 1}
+            icon={
+              <ChevronDoubleLeftIcon
+                style={{ height: "1.25rem", width: "1.25rem" }}
+              />
+            }
+          />
+          <Button>{page}</Button>
+          <IconButton
+            aria-label="next"
+            onClick={() => setPage(page + 1)}
+            disabled={page == data.totalPage}
+            icon={
+              <ChevronDoubleRightIcon
+                style={{ height: "1.25rem", width: "1.25rem" }}
+              />
+            }
+          />
+        </ButtonGroup>
+        {/* {isFetching ? <span> Loading...</span> : null} */}
+      </TableCaption>
     </Table>
   );
 }
