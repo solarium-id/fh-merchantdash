@@ -15,6 +15,7 @@ import {
 import { authRouting } from "../lib/authRouting";
 import { setCookie } from "nookies";
 import type { GetServerSideProps } from "next";
+import HtmlHead from "../components/HtmlHead";
 
 // api endpoint
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
@@ -76,74 +77,77 @@ function Login() {
   };
 
   return (
-    <Flex
-      justify="center"
-      align="center"
-      style={{ height: "100vh" }}
-      bg="gray.100"
-      color="gray.800"
-    >
+    <>
+      <HtmlHead title="Login" />
       <Flex
-        p="12"
-        flexDir="column"
-        align="center"
         justify="center"
-        gridGap="6"
-        bg="white"
-        rounded="xl"
-        border="1px"
-        borderColor="gray.300"
+        align="center"
+        style={{ height: "100vh" }}
+        bg="gray.100"
+        color="gray.800"
       >
-        {/* heading */}
-        <VStack spacing="0">
-          <Text fontSize="2xl" fontWeight="bold">
-            Masuk
-          </Text>
-          <Text fontSize="md" fontWeight="semibold">
-            Masuk Untuk Mengakses Dashboard
-          </Text>
-        </VStack>
-
-        {/* login form */}
-        <form onSubmit={handleLogin}>
-          <VStack spacing="2">
-            {/* email input */}
-            <FormControl id="email" isRequired isInvalid={isInvalid}>
-              <FormLabel>Email address</FormLabel>
-              <Input
-                type="email"
-                placeholder="example@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <FormErrorMessage>Email atau password salah</FormErrorMessage>
-            </FormControl>
-            {/* password input */}
-            <FormControl id="password" isRequired isInvalid={isInvalid}>
-              <FormLabel>Password</FormLabel>
-              <Input
-                type="password"
-                placeholder="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <FormErrorMessage>Email atau password salah</FormErrorMessage>
-            </FormControl>
+        <Flex
+          p="12"
+          flexDir="column"
+          align="center"
+          justify="center"
+          gridGap="6"
+          bg="white"
+          rounded="xl"
+          border="1px"
+          borderColor="gray.300"
+        >
+          {/* heading */}
+          <VStack spacing="0">
+            <Text fontSize="2xl" fontWeight="bold">
+              Masuk
+            </Text>
+            <Text fontSize="md" fontWeight="semibold">
+              Masuk Untuk Mengakses Dashboard
+            </Text>
           </VStack>
 
-          {/* login button */}
-          <Button
-            isLoading={isLoading}
-            type="submit"
-            mt="4"
-            colorScheme="blue"
-            w="full"
-          >
-            Masuk
-          </Button>
-        </form>
+          {/* login form */}
+          <form onSubmit={handleLogin}>
+            <VStack spacing="2">
+              {/* email input */}
+              <FormControl id="email" isRequired isInvalid={isInvalid}>
+                <FormLabel>Email address</FormLabel>
+                <Input
+                  type="email"
+                  placeholder="example@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <FormErrorMessage>Email atau password salah</FormErrorMessage>
+              </FormControl>
+              {/* password input */}
+              <FormControl id="password" isRequired isInvalid={isInvalid}>
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
+                  placeholder="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <FormErrorMessage>Email atau password salah</FormErrorMessage>
+              </FormControl>
+            </VStack>
+
+            {/* login button */}
+            <Button
+              isLoading={isLoading}
+              type="submit"
+              mt="4"
+              colorScheme="blue"
+              w="full"
+            >
+              Masuk
+            </Button>
+          </form>
+        </Flex>
       </Flex>
-    </Flex>
+    </>
   );
 }
 

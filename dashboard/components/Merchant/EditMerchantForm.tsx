@@ -76,8 +76,6 @@ function EditMerchantForm({ merchant, category, token, edit }: PropsTypes) {
     })
   );
 
-  console.log(newMerchant.reservation);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);

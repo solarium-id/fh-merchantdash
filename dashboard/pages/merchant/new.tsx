@@ -6,6 +6,7 @@ import axios from "axios";
 import { authRouting } from "../../lib/authRouting";
 import nookies, { parseCookies } from "nookies";
 import type { GetServerSideProps } from "next";
+import HtmlHead from "../../components/HtmlHead";
 
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
 
@@ -31,7 +32,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const token = nookies.get(context);
     // get data detail category
     const category = await getCategory(token.jwt);
-    console.log(category);
     // kirimkan data category ke component utama
     return { props: { category } };
   }
@@ -41,20 +41,23 @@ function NewMerchant({ category }) {
   const token = parseCookies();
 
   return (
-    <Flex
-      border="1px"
-      flexDir="column"
-      borderColor="gray.300"
-      rounded="xl"
-      p="4"
-      mb="4"
-      color="gray.700"
-    >
-      <Heading mb="4" fontSize="2xl">
-        Tambah Merchant Baru
-      </Heading>
-      <NewMerchantForm category={category} token={token.jwt} />
-    </Flex>
+    <>
+      <HtmlHead title="Merchant Baru" />
+      <Flex
+        border="1px"
+        flexDir="column"
+        borderColor="gray.300"
+        rounded="xl"
+        p="4"
+        mb="4"
+        color="gray.700"
+      >
+        <Heading mb="4" fontSize="2xl">
+          Tambah Merchant Baru
+        </Heading>
+        <NewMerchantForm category={category} token={token.jwt} />
+      </Flex>
+    </>
   );
 }
 

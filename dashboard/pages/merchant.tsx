@@ -7,6 +7,7 @@ import nookies, { parseCookies } from "nookies";
 import type { GetServerSideProps } from "next";
 import MerchantTable from "../components/Merchant/Table";
 import Link from "next/link";
+import HtmlHead from "../components/HtmlHead";
 
 // api endpoint
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
@@ -54,38 +55,41 @@ function MerchantPage(props) {
   );
 
   return (
-    <Flex
-      border="1px"
-      flexDir="column"
-      borderColor="gray.300"
-      rounded="xl"
-      p="4"
-      color="gray.700"
-    >
-      {/* page heading */}
-      <Flex justify="space-between" align="center" mb="4">
-        <Heading fontSize="xl">Tabel Merchant</Heading>
-        {/* tambah button */}
-        <Link href="/merchant/new">
-          <Button colorScheme="blue">Tambah Merchant</Button>
-        </Link>
-      </Flex>
+    <>
+      <HtmlHead title="Daftar Merchant" />
+      <Flex
+        border="1px"
+        flexDir="column"
+        borderColor="gray.300"
+        rounded="xl"
+        p="4"
+        color="gray.700"
+      >
+        {/* page heading */}
+        <Flex justify="space-between" align="center" mb="4">
+          <Heading fontSize="xl">Tabel Merchant</Heading>
+          {/* tambah button */}
+          <Link href="/merchant/new">
+            <Button colorScheme="blue">Tambah Merchant</Button>
+          </Link>
+        </Flex>
 
-      {status === "loading" && (
-        <Heading fontSize="xl" my="8">
-          Loading
-        </Heading>
-      )}
-      {/* table */}
-      {status === "success" && (
-        <MerchantTable
-          data={data}
-          page={page}
-          setPage={setPage}
-          isFetching={isFetching}
-        />
-      )}
-    </Flex>
+        {status === "loading" && (
+          <Heading fontSize="xl" my="8">
+            Loading
+          </Heading>
+        )}
+        {/* table */}
+        {status === "success" && (
+          <MerchantTable
+            data={data}
+            page={page}
+            setPage={setPage}
+            isFetching={isFetching}
+          />
+        )}
+      </Flex>
+    </>
   );
 }
 

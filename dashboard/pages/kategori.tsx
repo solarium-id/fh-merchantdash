@@ -18,6 +18,7 @@ import {
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/react/outline";
+import HtmlHead from "../components/HtmlHead";
 // api endpoint
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
 
@@ -67,45 +68,48 @@ function KategoriPage(props) {
   );
 
   return (
-    <Flex
-      border="1px"
-      flexDir="column"
-      borderColor="gray.300"
-      rounded="xl"
-      p="4"
-      color="gray.700"
-    >
-      {/* page heading */}
-      <Flex justify="space-between" align="center" mb="4">
-        <Heading fontSize="xl">Tabel Kategori</Heading>
-        {/* tambah button */}
-        <Button colorScheme="blue" onClick={onOpen}>
-          Tambah Kategori
-        </Button>
-      </Flex>
-      {/* tambah kategori modal */}
-      <NewKategori
-        token={token.jwt}
-        modalControl={{ isOpen, onOpen, onClose }}
-      />
+    <>
+      <HtmlHead title="Daftar Kategori" />
+      <Flex
+        border="1px"
+        flexDir="column"
+        borderColor="gray.300"
+        rounded="xl"
+        p="4"
+        color="gray.700"
+      >
+        {/* page heading */}
+        <Flex justify="space-between" align="center" mb="4">
+          <Heading fontSize="xl">Tabel Kategori</Heading>
+          {/* tambah button */}
+          <Button colorScheme="blue" onClick={onOpen}>
+            Tambah Kategori
+          </Button>
+        </Flex>
+        {/* tambah kategori modal */}
+        <NewKategori
+          token={token.jwt}
+          modalControl={{ isOpen, onOpen, onClose }}
+        />
 
-      {status === "loading" && (
-        <Heading fontSize="xl" my="8">
-          Loading
-        </Heading>
-      )}
-      {/* table */}
-      {status === "success" && (
-        <>
-          <KategoriTable
-            data={data}
-            page={page}
-            setPage={setPage}
-            isFetching={isFetching}
-          />
-        </>
-      )}
-    </Flex>
+        {status === "loading" && (
+          <Heading fontSize="xl" my="8">
+            Loading
+          </Heading>
+        )}
+        {/* table */}
+        {status === "success" && (
+          <>
+            <KategoriTable
+              data={data}
+              page={page}
+              setPage={setPage}
+              isFetching={isFetching}
+            />
+          </>
+        )}
+      </Flex>
+    </>
   );
 }
 

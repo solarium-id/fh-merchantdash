@@ -46,7 +46,7 @@ function FotoKtpForm({ token, setKTPImg, KTPImg, isEditing }: PropsTypes) {
 
       setIsLoading(false);
       setIsSubmitted(true);
-      console.log(res.data);
+      // console.log(res.data);
     } catch (error) {
       setIsLoading(false);
       setIsSubmitted(false);
